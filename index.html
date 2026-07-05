@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FinTrack Pro - Enterprise Finance</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+  <div id="toast-container"></div>
+
+  <div id="app-root">
+
+    <div id="auth-container">
+      <div class="auth-card">
+
+        <div id="login-view">
+          <div class="auth-header">
+            <h1>Welcome Back</h1>
+            <p>Login to FinTrack Pro</p>
+          </div>
+
+          <form id="login-form" onsubmit="handleLogin(event)">
+            <div class="form-group">
+              <label for="login-username">Username</label>
+              <input type="text" id="login-username" required placeholder="Enter your username" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label for="login-password">Password</label>
+              <input type="password" id="login-password" required placeholder="Enter your password"
+                class="form-control">
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="margin-top: 8px;">Login</button>
+          </form>
+
+          <div class="auth-footer">
+            Don't have an account? <button onclick="toggleAuthView('register')">Register here</button>
+          </div>
+        </div>
+
+        <div id="register-view" class="hidden">
+          <div class="auth-header">
+            <h1>Create Account</h1>
+            <p>Join FinTrack Pro</p>
+          </div>
+
+          <form id="register-form" onsubmit="handleRegister(event)">
+            <div class="form-group">
+              <label for="register-username">Choose a Username</label>
+              <input type="text" id="register-username" required placeholder="e.g. money_master" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label for="register-password">Password</label>
+              <input type="password" id="register-password" required placeholder="Create a password"
+                class="form-control">
+            </div>
+
+            <button type="submit" class="btn btn-success" style="margin-top: 8px;">Register</button>
+          </form>
+
+          <div class="auth-footer">
+            Already have an account? <button onclick="toggleAuthView('login')">Login here</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="dashboard-container" class="hidden">
+
+      <aside class="sidebar">
+        <div>
+          <div class="sidebar-brand">
+            <div class="sidebar-logo-icon">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                  d="M6.429 9.75L2.25 12l4.179 2.25m11.142 0L21.75 12l-4.179-2.25m-11.142 0L12 7.5l4.179 2.25m-11.142 0l4.179 2.25L12 12l4.179-2.25M12 12l4.179 2.25L12 16.5l-4.179-2.25L12 12zm0 4.5l4.179 2.25L12 21l-4.179-2.25L12 16.5z" />
+              </svg>
+            </div>
+            <div class="sidebar-brand-text">
+              <h2>FinTrack Pro</h2>
+              <span>Enterprise Finance</span>
+            </div>
+          </div>
+
+          <nav class="sidebar-nav">
+            <button id="tab-btn-dashboard" class="nav-item active" onclick="switchTab('dashboard')">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-3.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+              </svg>
+              Dashboard
+            </button>
+            <button id="tab-btn-settings" class="nav-item" onclick="switchTab('settings')">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              Settings
+            </button>
+          </nav>
+        </div>
+
+        <div class="sidebar-footer">
+          <button class="btn-add-transaction" onclick="openTransactionModal()">
+            <svg style="width:16px;height:16px" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+              stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            Add Transaction
+          </button>
+        </div>
+      </aside>
+
+      <main class="main-workspace">
+
+        <header class="top-header">
+          <div class="terminal-badge">Enterprise Terminal</div>
+          <div class="header-user-controls">
+            <div class="profile-widget">
+              <div id="user-avatar" class="avatar-circle">U</div>
+              <span id="header-username" class="profile-name">User</span>
+            </div>
+            <button class="btn-logout" onclick="handleLogout()">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+              </svg>
+              Logout
+            </button>
+          </div>
+        </header>
+
+        <div id="tab-dashboard" class="content-section">
+
+          <div class="section-title">
+            <h1>Financial Overview</h1>
+            <p>Real-time tracking application</p>
+          </div>
+
+          <div class="metrics-grid">
+
+            <div class="metric-card">
+              <div class="metric-icon-box blue">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.053.244-7.5.72V21M3 21h18M12 6.75h.008v.008H12V6.75z" />
+                </svg>
+              </div>
+              <div class="metric-meta">
+                <span>Current Balance</span>
+                <h3 id="meta-balance">$0.00</h3>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-icon-box emerald">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" />
+                </svg>
+              </div>
+              <div class="metric-meta">
+                <span>Total Income</span>
+                <h3 id="meta-income" style="color:var(--success);">$0.00</h3>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-icon-box rose">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M2.25 6L9 12.75l4.306-4.307a11.95 11.95 0 015.814 5.519l2.74 1.22m0 0l-5.94 2.28m5.94 2.28l-2.28 5.941" />
+                </svg>
+              </div>
+              <div class="metric-meta">
+                <span>Total Expense</span>
+                <h3 id="meta-expense" style="color:var(--rose);">$0.00</h3>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-icon-box indigo">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                </svg>
+              </div>
+              <div class="metric-meta">
+                <span>Total Transactions</span>
+                <h3 id="meta-count">0</h3>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="analytics-grid">
+
+            <div class="card-block">
+              <div class="card-header-flex">
+                <div class="card-header-title">
+                  <h3>Cash Flow Analysis</h3>
+                  <span>Monthly transactional comparison</span>
+                </div>
+                <div class="legend-indicators">
+                  <div class="legend-indicator legend-income">
+                    <span></span> Income
+                  </div>
+                  <div class="legend-indicator legend-expense">
+                    <span></span> Expenses
+                  </div>
+                </div>
+              </div>
+
+              <div class="canvas-container">
+                <canvas id="cashflow-canvas"></canvas>
+              </div>
+              <div
+                style="text-align: center; font-size: 11px; color: var(--text-gray-400); margin-top: 8px; font-weight: 500;">
+                Income vs Expenses
+              </div>
+            </div>
+
+            <div class="card-block">
+              <div>
+                <div class="card-header-flex" style="margin-bottom:12px;">
+                  <div class="card-header-title">
+                    <h3>Preferences</h3>
+                  </div>
+                </div>
+
+                <div class="pref-item">
+                  <span>Dark Mode</span>
+                  <label class="switch">
+                    <input type="checkbox" id="dark-mode-toggle" onchange="handleThemeToggle()">
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+
+              <button class="btn-reset" onclick="triggerResetFlow()">
+                <svg style="width:14px;height:14px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+                Reset All Data
+              </button>
+            </div>
+
+          </div>
+
+          <div class="ledger-block">
+
+            <div class="ledger-filter-row">
+              <div class="ledger-title">
+                <h3>All Transactions</h3>
+              </div>
+              <div class="ledger-controls">
+
+                <div class="search-wrapper">
+                  <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                  <input type="text" id="search-input" oninput="handleSearchAndFilter()"
+                    placeholder="Search transactions..." class="form-control search-control">
+                </div>
+
+                <select id="filter-type" onchange="handleSearchAndFilter()" class="select-control">
+                  <option value="all">All Types</option>
+                  <option value="Income">Income</option>
+                  <option value="Expense">Expense</option>
+                </select>
+
+              </div>
+            </div>
+
+            <div class="table-container">
+              <table class="ledger-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Category</th>
+                    <th style="text-align: right;">Amount</th>
+                    <th style="text-align: center;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="ledger-table-rows">
+                </tbody>
+              </table>
+
+              <div id="ledger-empty-state" class="ledger-empty hidden">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <p>No transactions matching your search filters.</p>
+                <button onclick="openTransactionModal()">Add transaction now</button>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div id="tab-settings" class="content-section hidden">
+
+          <div class="section-title">
+            <h1>Settings</h1>
+            <p>Manage your account profile and app formatting.</p>
+          </div>
+
+          <div class="profile-card">
+            <h2 class="profile-card-title">Profile Details</h2>
+
+            <form id="profile-settings-form" onsubmit="handleSettingsSave(event)">
+              <div class="settings-form-grid">
+
+                <div class="form-group">
+                  <label for="settings-fullname">Full Name</label>
+                  <input type="text" id="settings-fullname" required placeholder="Enter full name" class="form-control">
+                </div>
+
+                <div class="form-group">
+                  <label for="settings-currency">Primary Currency</label>
+                  <select id="settings-currency" class="select-control" style="width:100%; height:45px;">
+                    <option value="USD">USD ($)</option>
+                    <option value="EUR">EUR (€)</option>
+                    <option value="GBP">GBP (£)</option>
+                    <option value="INR">INR (₹)</option>
+                  </select>
+                </div>
+
+              </div>
+
+              <button type="submit" class="btn btn-black" style="width: auto; padding: 12px 24px;">Save Changes</button>
+            </form>
+          </div>
+
+        </div>
+
+      </main>
+
+    </div>
+
+  </div>
+
+  <div id="tx-modal" class="modal-overlay">
+    <div class="modal-box">
+
+      <div class="modal-header">
+        <div class="modal-header-title">
+          <h3>Add New Ledger Record</h3>
+          <p>Record a real-time transaction</p>
+        </div>
+        <button class="btn-close-modal" onclick="closeTransactionModal()">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <form id="tx-modal-form" onsubmit="handleModalTransactionSubmit(event)">
+
+        <div class="form-group">
+          <label for="modal-tx-desc">Description</label>
+          <input type="text" id="modal-tx-desc" required placeholder="e.g. Organic Groceries" class="form-control">
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label for="modal-tx-type">Transaction Type</label>
+            <select id="modal-tx-type" class="select-control" style="width: 100%;">
+              <option value="Expense">Expense</option>
+              <option value="Income">Income</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="modal-tx-amount">Amount ($ USD)</label>
+            <input type="number" step="0.01" id="modal-tx-amount" required placeholder="0.00" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="modal-tx-category">Category</label>
+          <select id="modal-tx-category" class="select-control" style="width: 100%;">
+            <option value="Food & Dining">Food & Dining</option>
+            <option value="Housing & Bills">Housing & Bills</option>
+            <option value="Salary & Dividends">Salary & Dividends</option>
+            <option value="Transportation">Transportation</option>
+            <option value="Leisure & Lifestyle">Entertainment & Lifestyle</option>
+            <option value="Technology">Technology & Devices</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="modal-tx-date">Record Date</label>
+          <input type="date" id="modal-tx-date" required class="form-control">
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-cancel" onclick="closeTransactionModal()">Cancel</button>
+          <button type="submit" class="btn btn-black">Save Transaction</button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <div id="confirm-modal" class="modal-overlay">
+    <div class="modal-box" style="text-align: center; max-width: 380px;">
+
+      <div
+        style="color: var(--rose); background-color: var(--rose-light); width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px auto;">
+        <svg style="width:24px;height:24px" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+      </div>
+
+      <h3 style="font-size: 18px; font-weight: 700; color: var(--text-main); margin-bottom: 8px;">Confirm Data Reset
+      </h3>
+      <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 24px;">
+        This operation is irreversible. All transaction lists stored under your profile will be cleared instantly.
+      </p>
+
+      <div class="modal-actions" style="grid-template-columns: 1fr 1fr; margin-top: 0;">
+        <button class="btn btn-cancel" onclick="closeResetModal()">No, Cancel</button>
+        <button class="btn btn-success" style="background-color: var(--rose);" onclick="confirmResetAllData()">Yes,
+          Reset All</button>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+
+</html>
